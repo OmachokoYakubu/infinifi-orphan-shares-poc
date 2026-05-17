@@ -103,7 +103,226 @@ Logs:
   Remaining ReceiptTokens in UnwindingModule: 0
   Bob's initial balance in UnwindingModule: 909090909090909090909
 
-Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 20.13ms (3.21ms CPU time)
+Traces:
+  [1659775] OrphanSharesPoC::testOrphanSharesDrainBob()
+    ├─ [19720] redeemController::receiptToAsset(1000000000000000000000 [1e21]) [staticcall]
+    │   ├─ [7830] accounting::price(usdc: [0xc7183455a4C133Ae270771860664b6B7ec320bB1]) [staticcall]
+    │   │   ├─ [2338] oracleUsdc::price() [staticcall]
+    │   │   │   └─ ← [Return] 1000000000000000000000000000000 [1e30]
+    │   │   └─ ← [Return] 1000000000000000000000000000000 [1e30]
+    │   ├─ [7830] accounting::price(iusd: [0xF62849F9A0B5Bf2913b396098F7c7019b51A820a]) [staticcall]
+    │   │   ├─ [2338] oracleIusd::price() [staticcall]
+    │   │   │   └─ ← [Return] 1000000000000000000 [1e18]
+    │   │   └─ ← [Return] 1000000000000000000 [1e18]
+    │   └─ ← [Return] 1000000000 [1e9]
+    ├─ [46898] usdc::mint(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], 1000000001 [1e9])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], value: 1000000001 [1e9])
+    │   └─ ← [Return] 1
+    ├─ [0] VM::prank(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7])
+    │   └─ ← [Return]
+    ├─ [54619] iusd::mint(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1000000000000000000000 [1e21])
+    │   ├─ [2702] core::hasRole(0x615a688d53344290b742a2e72e4f187e5b88227c01f9d77ce2406d32f8bd0eda, mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7]) [staticcall]
+    │   │   └─ ← [Return] true
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [0] VM::startPrank(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   └─ ← [Return]
+    ├─ [24757] iusd::approve(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], spender: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [231869] gateway::fallback(1000000000000000000000 [1e21], 10, Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   ├─ [226924] InfiniFiGatewayV1::createPosition(1000000000000000000000 [1e21], 10, Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea]) [delegatecall]
+    │   │   ├─ [26068] iusd::transferFrom(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   │   │   ├─ emit Transfer(from: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], to: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], value: 1000000000000000000000 [1e21])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [24757] iusd::approve(lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1000000000000000000000 [1e21])
+    │   │   │   ├─ emit Approval(owner: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], spender: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1000000000000000000000 [1e21])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [164407] lockingController::createPosition(1000000000000000000000 [1e21], 10, Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   │   │   ├─ [2702] core::hasRole(0x276ea66e969b021a947c47a128f4d53c55387336443ef7a5391a75f0d2e48d25, gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840]) [staticcall]
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [26068] iusd::transferFrom(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], to: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [2371] liUSD-10w::totalSupply() [staticcall]
+    │   │   │   │   └─ ← [Return] 0
+    │   │   │   ├─ [52347] liUSD-10w::mint(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ [2702] core::hasRole(0xc46edb8291bbe8016e3c83529d0eb01c2733d265fc4594ac6299b3ef72721546, lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7]) [staticcall]
+    │   │   │   │   │   └─ ← [Return] true
+    │   │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ emit PositionCreated(timestamp: 1733412513 [1.733e9], user: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], amount: 1000000000000000000000 [1e21], unwindingEpochs: 10)
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   └─ ← [Return]
+    ├─ [660] lockingController::shareToken(10) [staticcall]
+    │   └─ ← [Return] liUSD-10w: [0x94771550282853f6E0124c302F7dE1Cf50aa45CA]
+    ├─ [24780] liUSD-10w::approve(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   ├─ emit Approval(owner: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], spender: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [357367] gateway::fallback(1000000000000000000000 [1e21], 10)
+    │   ├─ [356928] InfiniFiGatewayV1::startUnwinding(1000000000000000000000 [1e21], 10) [delegatecall]
+    │   │   ├─ [300296] lockingController::startUnwinding(1000000000000000000000 [1e21], 10, Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   │   │   ├─ [229101] unwindingModule::startUnwinding(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1000000000000000000000 [1e21], 10, 1200000000000000000000 [1.2e21])
+    │   │   │   │   ├─ emit GlobalPointUpdated(timestamp: 1733412513 [1.733e9], : GlobalPoint({ epoch: 2865, totalRewardWeight: 0, totalRewardWeightDecrease: 0, rewardShares: 0 }))
+    │   │   │   │   ├─ emit UnwindingStarted(timestamp: 1733412513 [1.733e9], user: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], receiptTokens: 1000000000000000000000 [1e21], unwindingEpochs: 10, rewardWeight: 1200000000000000000000 [1.2e21])
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [25195] iusd::transfer(unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], to: unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(1734017313 [1.734e9])
+    │   └─ ← [Return]
+    ├─ [3098] usdc::mint(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], 100000001 [1e8])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], value: 100000001 [1e8])
+    │   └─ ← [Return] 1
+    ├─ [0] VM::prank(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7])
+    │   └─ ← [Return]
+    ├─ [26219] iusd::mint(yieldSharing: [0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240], 100000000000000000000 [1e20])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: yieldSharing: [0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240], value: 100000000000000000000 [1e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::startPrank(yieldSharing: [0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240])
+    │   └─ ← [Return]
+    ├─ [7657] iusd::approve(lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 100000000000000000000 [1e20])
+    │   └─ ← [Return] true
+    ├─ [121263] lockingController::depositRewards(100000000000000000000 [1e20])
+    │   ├─ emit RewardsDeposited(timestamp: 1734017313 [1.734e9], amount: 100000000000000000000 [1e20])
+    │   ├─ [24068] iusd::transferFrom(yieldSharing: [0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240], lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 100000000000000000000 [1e20])
+    │   │   ├─ emit Transfer(from: yieldSharing: [0xDB25A7b768311dE128BBDa7B8426c3f9C74f3240], to: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 100000000000000000000 [1e20])
+    │   │   └─ ← [Return] true
+    │   ├─ [79558] unwindingModule::depositRewards(100000000000000000000 [1e20])
+    │   │   ├─ emit GlobalPointUpdated(timestamp: 1734017313 [1.734e9], : GlobalPoint({ epoch: 2866, totalRewardWeight: 1200000000000000000000 [1.2e21], totalRewardWeightDecrease: 0, rewardShares: 100000000000000000000 [1e20] }))
+    │   │   └─ ← [Stop]
+    │   ├─ [3295] iusd::transfer(unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], 100000000000000000000 [1e20])
+    │   │   ├─ emit Transfer(from: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], to: unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], value: 100000000000000000000 [1e20])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [11185] unwindingModule::balanceOf(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1733412513 [1.733e9]) [staticcall]
+    │   └─ ← [Return] 1100000000000000000000 [1.1e21]
+    ├─ [0] VM::assertApproxEqAbs(1100000000000000000000 [1.1e21], 1100000000000000000000 [1.1e21], 1000000000000000 [1e15], "Alice should have earned 100 iUSD in rewards") [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   └─ ← [Return]
+    ├─ [184435] gateway::fallback(1733412513 [1.733e9], 10)
+    │   ├─ [183996] InfiniFiGatewayV1::cancelUnwinding(1733412513 [1.733e9], 10) [delegatecall]
+    │   │   ├─ [182414] lockingController::cancelUnwinding(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1733412513 [1.733e9], 10)
+    │   │   │   ├─ [180112] unwindingModule::cancelUnwinding(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1733412513 [1.733e9], 10)
+    │   │   │   │   ├─ emit GlobalPointUpdated(timestamp: 1734017313 [1.734e9], : GlobalPoint({ epoch: 2866, totalRewardWeight: 0, totalRewardWeightDecrease: 0, rewardShares: 100000000000000000000 [1e20] }))
+    │   │   │   │   ├─ [24757] iusd::approve(lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   ├─ emit Approval(owner: unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], spender: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   └─ ← [Return] true
+    │   │   │   │   ├─ [134617] lockingController::createPosition(1100000000000000000000 [1.1e21], 10, Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea])
+    │   │   │   │   │   │   ├─ [24068] iusd::transferFrom(unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   │   │   ├─ emit Transfer(from: unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], to: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   │   │   └─ ← [Return] true
+    │   │   │   │   │   │   ├─ [44347] liUSD-10w::mint(Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], value: 1100000000000000000000 [1.1e21])
+    │   │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   │   ├─ emit PositionCreated(timestamp: 1734017313 [1.734e9], user: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], amount: 1100000000000000000000 [1.1e21], unwindingEpochs: 10)
+    │   │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   │   └─ ← [Stop]
+    │   │   │   │   ├─ emit UnwindingCanceled(timestamp: 1734017313 [1.734e9], user: Alice: [0xBf0b5A4099F0bf6c8bC4252eBeC548Bae95602Ea], startUnwindingTimestamp: 1733412513 [1.733e9], newUnwindingEpochs: 10)
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [329] unwindingModule::totalShares() [staticcall]
+    │   └─ ← [Return] 100000000000000000000 [1e20]
+    ├─ [350] unwindingModule::totalReceiptTokens() [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [0] console::log("After Alice cancelUnwinding:") [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Remaining Shares in UnwindingModule:", 100000000000000000000 [1e20]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] console::log("Remaining ReceiptTokens in UnwindingModule:", 0) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::assertApproxEqAbs(100000000000000000000 [1e20], 100000000000000000000 [1e20], 1000000000000000 [1e15], "Orphan shares should be left in UnwindingModule") [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0, "Receipt tokens in UnwindingModule should be 0") [staticcall]
+    │   └─ ← [Return]
+    ├─ [3098] usdc::mint(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], 1000000001 [1e9])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7], value: 1000000001 [1e9])
+    │   └─ ← [Return] 1
+    ├─ [0] VM::prank(mintController: [0x3D7Ebc40AF7092E3F1C81F2e996cbA5Cae2090d7])
+    │   └─ ← [Return]
+    ├─ [26219] iusd::mint(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Stop]
+    ├─ [0] VM::startPrank(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C])
+    │   └─ ← [Return]
+    ├─ [24757] iusd::approve(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [88899] gateway::fallback(1000000000000000000000 [1e21], 10, Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C])
+    │   ├─ [88454] InfiniFiGatewayV1::createPosition(1000000000000000000000 [1e21], 10, Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C]) [delegatecall]
+    │   │   ├─ [24068] iusd::transferFrom(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   │   │   ├─ emit Transfer(from: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], to: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], value: 1000000000000000000000 [1e21])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [22657] iusd::approve(lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1000000000000000000000 [1e21])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [38537] lockingController::createPosition(1000000000000000000000 [1e21], 10, Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C])
+    │   │   │   ├─ [4168] iusd::transferFrom(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], to: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [371] liUSD-10w::totalSupply() [staticcall]
+    │   │   │   │   └─ ← [Return] 1100000000000000000000 [1.1e21]
+    │   │   │   ├─ [26447] liUSD-10w::mint(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ emit PositionCreated(timestamp: 1734017313 [1.734e9], user: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], amount: 1000000000000000000000 [1e21], unwindingEpochs: 10)
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C])
+    │   └─ ← [Return]
+    ├─ [660] lockingController::shareToken(10) [staticcall]
+    │   └─ ← [Return] liUSD-10w: [0x94771550282853f6E0124c302F7dE1Cf50aa45CA]
+    ├─ [24780] liUSD-10w::approve(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [300354] gateway::fallback(1000000000000000000000 [1e21], 10)
+    │   ├─ [299915] InfiniFiGatewayV1::startUnwinding(1000000000000000000000 [1e21], 10) [delegatecall]
+    │   │   ├─ [247383] lockingController::startUnwinding(1000000000000000000000 [1e21], 10, Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C])
+    │   │   │   ├─ [24274] liUSD-10w::transferFrom(gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: gateway: [0xe8dc788818033232EF9772CB2e6622F1Ec8bc840], to: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [4499] liUSD-10w::burn(1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], to: 0x0000000000000000000000000000000000000000, value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [186701] unwindingModule::startUnwinding(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], 1000000000000000000000 [1e21], 10, 1200000000000000000000 [1.2e21])
+    │   │   │   │   ├─ emit GlobalPointUpdated(timestamp: 1734017313 [1.734e9], : GlobalPoint({ epoch: 2866, totalRewardWeight: 0, totalRewardWeightDecrease: 0, rewardShares: 100000000000000000000 [1e20] }))
+    │   │   │   │   ├─ emit UnwindingStarted(timestamp: 1734017313 [1.734e9], user: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], receiptTokens: 1000000000000000000000 [1e21], unwindingEpochs: 10, rewardWeight: 1200000000000000000000 [1.2e21])
+    │   │   │   │   └─ ← [Stop]
+    │   │   │   ├─ [23195] iusd::transfer(unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], 1000000000000000000000 [1e21])
+    │   │   │   │   ├─ emit Transfer(from: lockingController: [0x13aa49bAc059d709dd0a18D6bb63290076a702D7], to: unwindingModule: [0x96d3F6c20EEd2697647F543fE6C08bC2Fbf39758], value: 1000000000000000000000 [1e21])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ emit PositionRemoved(timestamp: 1734017313 [1.734e9], user: Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], amount: 1000000000000000000000 [1e21], unwindingEpochs: 10)
+    │   │   │   └─ ← [Stop]
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [4767] unwindingModule::balanceOf(Bob: [0x4dBa461cA9342F4A6Cf942aBd7eacf8AE259108C], 1734017313 [1.734e9]) [staticcall]
+    │   └─ ← [Return] 909090909090909090909 [9.09e20]
+    ├─ [0] console::log("Bob's initial balance in UnwindingModule:", 909090909090909090909 [9.09e20]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::assertLt(909090909090909090909 [9.09e20], 910000000000000000000 [9.1e20], "Bob's balance should be heavily diluted") [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+Suite result: ok. 2 passed; 0 failed; 0 skipped; finished in 12.79s (758.09ms CPU time)
 ```
 
 As proved in the logs:
