@@ -145,5 +145,7 @@ Update both `cancelUnwinding` and `withdraw` in `UnwindingModule.sol` to subtrac
 +       totalShares -= userShares;
 ```
 
+Detailed remediation steps are provided in [REMEDIATION_STRATEGY.md](https://github.com/OmachokoYakubu/infinifi-orphan-shares-poc/blob/main/REMEDIATION_STRATEGY.md).
+
 ---
 *Verified via forked-mainnet testing.*
